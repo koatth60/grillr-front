@@ -3,40 +3,35 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type Question = {
-  id: string;
-  text: string;
-  order: number;
-  answer: string | null;
-  feedback: string | null;
-  score: number | null;
-};
+type Question = { id: string; text: string; order: number; answer: string | null; feedback: string | null; score: number | null };
 
-export default function QuestionPanel({
-  question,
-  index,
-}: {
-  question: Question;
-  index: number;
-}) {
+function scoreBar(score: number): string {
+  const filled = Math.round(score);
+  const empty = 10 - filled;
+  return "█".repeat(filled) + "░".repeat(empty);
+}
+
+function scoreColor(score: number) {
+  if (score >= 7) return "var(--green)";
+  if (score >= 5) return "var(--amber)";
+  return "var(--red)";
+}
+
+export default function QuestionPanel({ question, index }: { question: Question; index: number }) {
   const router = useRouter();
   const [answer, setAnswer] = useState(question.answer ?? "");
   const [feedback, setFeedback] = useState(question.feedback);
   const [score, setScore] = useState(question.score);
   const [loading, setLoading] = useState(false);
 
-  const alreadyAnswered = !!question.answer;
-
-  async function submitAnswer() {
+  async function submit() {
     if (!answer.trim() || loading) return;
     setLoading(true);
-
     const res = await fetch(`/api/questions/${question.id}/answer`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ answer }),
     });
-
     if (res.ok) {
       const data = await res.json();
       setFeedback(data.feedback);
@@ -46,66 +41,70 @@ export default function QuestionPanel({
     setLoading(false);
   }
 
-  const scoreColor =
-    score !== null
-      ? score >= 7
-        ? "text-green-400"
-        : score >= 5
-        ? "text-yellow-400"
-        : "text-red-400"
-      : "";
+  const num = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 space-y-4">
-      <div className="flex items-start gap-3">
-        <span className="bg-purple-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-          {index + 1}
-        </span>
-        <p className="text-white font-medium leading-relaxed">{question.text}</p>
+    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
+      {/* Question header */}
+      <div style={{ borderBottom: "1px solid var(--border)", padding: "12px 16px", display: "flex", alignItems: "flex-start", gap: 12 }}>
+        <span style={{ color: "var(--green)", fontWeight: 700, flexShrink: 0 }}>[{num}]</span>
+        <span style={{ color: "var(--text)", lineHeight: 1.6 }}>{question.text}</span>
+        {score !== null && (
+          <span style={{ marginLeft: "auto", color: scoreColor(score), fontWeight: 700, flexShrink: 0, fontSize: 13 }}>
+            {score}/10
+          </span>
+        )}
       </div>
 
-      {!alreadyAnswered ? (
-        <div className="space-y-3">
-          <textarea
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            rows={4}
-            placeholder="Type your answer here..."
-            className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
-          />
-          <button
-            onClick={submitAnswer}
-            disabled={loading || !answer.trim()}
-            className="bg-purple-600 hover:bg-purple-500 disabled:opacity-40 text-white font-semibold px-5 py-2 rounded-lg transition-colors text-sm"
-          >
-            {loading ? "Evaluating..." : "Submit Answer"}
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          <div className="bg-slate-700/50 rounded-lg px-4 py-3">
-            <p className="text-xs text-slate-500 mb-1">Your answer</p>
-            <p className="text-slate-300 text-sm">{answer}</p>
-          </div>
-
-          {feedback && (
-            <div className="flex items-start gap-4">
-              <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg px-4 py-3">
-                <p className="text-xs text-purple-400 mb-1">AI Feedback</p>
-                <p className="text-slate-300 text-sm">{feedback}</p>
-              </div>
-              {score !== null && (
-                <div className="flex flex-col items-center">
-                  <span className={`text-3xl font-bold ${scoreColor}`}>
-                    {score}
-                  </span>
-                  <span className="text-xs text-slate-500">/10</span>
-                </div>
-              )}
+      <div style={{ padding: 16 }}>
+        {!question.answer ? (
+          // Answer input
+          <div>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 12 }}>
+              <span style={{ color: "var(--green)", paddingTop: 10, flexShrink: 0 }}>$</span>
+              <textarea
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                rows={4}
+                placeholder="type your answer here..."
+                style={{ flex: 1, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 4, padding: "8px 12px", color: "var(--text)", fontFamily: "inherit", fontSize: 13, outline: "none", resize: "vertical" }}
+                onFocus={(e) => e.target.style.borderColor = "var(--green)"}
+                onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+              />
             </div>
-          )}
-        </div>
-      )}
+            <button
+              onClick={submit}
+              disabled={loading || !answer.trim()}
+              style={{ background: "transparent", border: "1px solid var(--green)", color: "var(--green)", padding: "6px 14px", borderRadius: 4, cursor: loading ? "not-allowed" : "pointer", fontFamily: "inherit", fontSize: 12, opacity: !answer.trim() ? 0.4 : 1 }}
+            >
+              {loading ? "evaluating..." : "$ submit →"}
+            </button>
+          </div>
+        ) : (
+          // Answered state
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {/* User answer */}
+            <div style={{ background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 4, padding: 12 }}>
+              <p style={{ color: "var(--muted)", fontSize: 11, marginBottom: 6 }}>// your answer</p>
+              <p style={{ color: "var(--text)", fontSize: 13, lineHeight: 1.6 }}>{answer}</p>
+            </div>
+
+            {/* AI feedback */}
+            {feedback && score !== null && (
+              <div style={{ background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 4, padding: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <p style={{ color: "var(--muted)", fontSize: 11 }}>// ai feedback</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span className="score-bar" style={{ color: scoreColor(score), fontSize: 11 }}>{scoreBar(score)}</span>
+                    <span style={{ color: scoreColor(score), fontWeight: 700, fontSize: 13 }}>{score}/10</span>
+                  </div>
+                </div>
+                <p style={{ color: "var(--text)", fontSize: 13, lineHeight: 1.6 }}>{feedback}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

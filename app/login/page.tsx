@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import TerminalWindow from "@/components/TerminalWindow";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,15 +17,9 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
+    const result = await signIn("credentials", { email, password, redirect: false });
     if (result?.error) {
-      setError("Invalid email or password");
+      setError("authentication failed: invalid credentials");
       setLoading(false);
     } else {
       router.push("/dashboard");
@@ -32,57 +27,58 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-slate-800 rounded-2xl p-8 border border-slate-700 space-y-6">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-slate-400 text-sm mt-1">Sign in to your account</p>
-        </div>
+    <main style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ width: "100%", maxWidth: 420 }}>
+        <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 16, textAlign: "center" }}>~/interview-prep-ai/auth</p>
 
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
-            {error}
-          </div>
-        )}
+        <TerminalWindow title="login.sh">
+          <div style={{ padding: 24 }}>
+            <p style={{ color: "var(--green)", fontWeight: 700, marginBottom: 4 }}>$ authenticate --user</p>
+            <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 24 }}>Enter your credentials to continue.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="text-sm text-slate-400 mb-1 block">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="you@example.com"
-            />
-          </div>
-          <div>
-            <label className="text-sm text-slate-400 mb-1 block">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="••••••••"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors"
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
+            {error && (
+              <div style={{ background: "#f851491a", border: "1px solid #f8514940", color: "var(--red)", padding: "8px 12px", borderRadius: 4, marginBottom: 16, fontSize: 13 }}>
+                ✗ {error}
+              </div>
+            )}
 
-        <p className="text-center text-sm text-slate-500">
-          No account?{" "}
-          <Link href="/register" className="text-purple-400 hover:underline">
-            Register free
-          </Link>
-        </p>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {[
+                { label: "email", type: "email", value: email, set: setEmail, placeholder: "user@example.com" },
+                { label: "password", type: "password", value: password, set: setPassword, placeholder: "••••••••" },
+              ].map(({ label, type, value, set, placeholder }) => (
+                <div key={label}>
+                  <label style={{ color: "var(--muted)", fontSize: 12, display: "block", marginBottom: 6 }}>
+                    <span style={{ color: "var(--blue)" }}>--{label}</span>
+                  </label>
+                  <input
+                    type={type}
+                    value={value}
+                    onChange={(e) => set(e.target.value)}
+                    required
+                    placeholder={placeholder}
+                    style={{ width: "100%", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 4, padding: "10px 12px", color: "var(--text)", fontFamily: "inherit", fontSize: 13, outline: "none" }}
+                    onFocus={(e) => e.target.style.borderColor = "var(--green)"}
+                    onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+                  />
+                </div>
+              ))}
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{ background: loading ? "var(--surface2)" : "var(--green)", color: "#0d1117", border: "none", padding: "10px 16px", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13, marginTop: 4 }}
+              >
+                {loading ? "authenticating..." : "$ login →"}
+              </button>
+            </form>
+
+            <p style={{ color: "var(--muted)", fontSize: 12, marginTop: 20, textAlign: "center" }}>
+              no account?{" "}
+              <Link href="/register" style={{ color: "var(--blue)", textDecoration: "none" }}>register --free</Link>
+            </p>
+          </div>
+        </TerminalWindow>
       </div>
     </main>
   );

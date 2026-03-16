@@ -4,87 +4,61 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import QuestionPanel from "@/components/QuestionPanel";
 
-export default async function InterviewPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function InterviewPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
   const { id } = await params;
-
   const interviewSession = await prisma.interviewSession.findUnique({
     where: { id },
     include: { questions: { orderBy: { order: "asc" } } },
   });
 
-  if (!interviewSession || interviewSession.userId !== session.user.id) {
-    notFound();
-  }
+  if (!interviewSession || interviewSession.userId !== session.user.id) notFound();
 
   const answered = interviewSession.questions.filter((q) => q.answer).length;
   const total = interviewSession.questions.length;
   const allAnswered = answered === total && total > 0;
-
-  const avgScore =
-    answered > 0
-      ? Math.round(
-          interviewSession.questions
-            .filter((q) => q.score)
-            .reduce((acc, q) => acc + (q.score ?? 0), 0) / answered
-        )
-      : null;
+  const scores = interviewSession.questions.filter((q) => q.score !== null).map((q) => q.score!);
+  const avg = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
+  const avgColor = avg === null ? "var(--muted)" : avg >= 7 ? "var(--green)" : avg >= 5 ? "var(--amber)" : "var(--red)";
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white">
-      <nav className="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-        <Link href="/dashboard" className="text-purple-400 hover:underline text-sm">
-          ← Dashboard
-        </Link>
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-slate-400">
-            {answered}/{total} answered
-            {avgScore !== null && (
-              <span className={`ml-3 font-bold ${avgScore >= 7 ? "text-green-400" : avgScore >= 5 ? "text-yellow-400" : "text-red-400"}`}>
-                Avg: {avgScore}/10
-              </span>
-            )}
-          </span>
+    <main style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+      <nav style={{ borderBottom: "1px solid var(--border)", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <Link href="/dashboard" style={{ color: "var(--muted)", textDecoration: "none", fontSize: 13 }}>~/dashboard</Link>
+          <span style={{ color: "var(--border)" }}>/</span>
+          <span style={{ color: "var(--green)" }}>{interviewSession.jobTitle}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 13 }}>
+          <span style={{ color: "var(--muted)" }}>{answered}/{total} answered</span>
+          {avg !== null && <span style={{ color: avgColor, fontWeight: 700 }}>avg: {avg}/10</span>}
           {allAnswered && (
-            <Link
-              href={`/interview/${id}/report`}
-              className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
-            >
-              View Report →
+            <Link href={`/interview/${id}/report`} style={{ background: "var(--green)", color: "#0d1117", padding: "5px 12px", borderRadius: 4, textDecoration: "none", fontWeight: 600, fontSize: 12 }}>
+              $ report →
             </Link>
           )}
         </div>
       </nav>
 
-      <div className="max-w-3xl mx-auto px-6 py-8 space-y-4">
-        <div>
-          <h1 className="text-2xl font-bold">{interviewSession.jobTitle}</h1>
-          <p className="text-slate-500 text-sm mt-1">
-            {new Date(interviewSession.createdAt).toLocaleDateString("en-US", {
-              weekday: "long", month: "long", day: "numeric", year: "numeric",
-            })}
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "32px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ marginBottom: 8 }}>
+          <p style={{ color: "var(--muted)", fontSize: 11, marginBottom: 4 }}>
+            // {new Date(interviewSession.createdAt).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </p>
+          <h1 style={{ fontSize: 20, fontWeight: 700 }}>{interviewSession.jobTitle}</h1>
         </div>
 
-        {interviewSession.questions.map((question, i) => (
-          <QuestionPanel key={question.id} question={question} index={i} />
+        {interviewSession.questions.map((q, i) => (
+          <QuestionPanel key={q.id} question={q} index={i} />
         ))}
 
         {allAnswered && (
-          <div className="bg-purple-900/20 border border-purple-500/30 rounded-2xl p-6 text-center space-y-3">
-            <p className="font-semibold text-purple-300">All questions answered!</p>
-            <p className="text-slate-400 text-sm">Generate your full AI performance report.</p>
-            <Link
-              href={`/interview/${id}/report`}
-              className="inline-block bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors"
-            >
-              ✨ Generate Report →
+          <div style={{ background: "var(--surface)", border: "1px solid var(--green)", borderRadius: 8, padding: 20, textAlign: "center" }}>
+            <p style={{ color: "var(--green)", fontWeight: 700, marginBottom: 8 }}>✓ all questions answered</p>
+            <Link href={`/interview/${id}/report`} style={{ color: "var(--green)", textDecoration: "none", fontWeight: 600 }}>
+              $ generate-report →
             </Link>
           </div>
         )}
