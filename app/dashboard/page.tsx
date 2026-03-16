@@ -29,7 +29,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <nav style={{ borderBottom: "1px solid var(--border)", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <span style={{ color: "var(--green)", fontWeight: 700 }}>~/dashboard</span>
-          {isPro && <span style={{ background: "var(--purple)", color: "#0d1117", fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 3 }}>PRO</span>}
+          {isPro && <span style={{ background: "var(--purple)", color: "var(--btn-text)", fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 3 }}>PRO</span>}
         </div>
         <div style={{ display: "flex", gap: 20, alignItems: "center", fontSize: 13 }}>
           <span style={{ color: "var(--muted)" }}>{user.email}</span>

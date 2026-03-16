@@ -15,7 +15,7 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
   return (
     <main style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       <nav style={{ borderBottom: "1px solid var(--border)", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/" style={{ color: "var(--green)", fontWeight: 700, textDecoration: "none" }}>~/interview-prep-ai</Link>
+        <Link href="/" style={{ color: "var(--green)", fontWeight: 700, textDecoration: "none" }}>~/grillr</Link>
         {session?.user
           ? <Link href="/dashboard" style={{ color: "var(--muted)", textDecoration: "none", fontSize: 13 }}>dashboard →</Link>
           : <Link href="/login" style={{ color: "var(--muted)", textDecoration: "none", fontSize: 13 }}>login</Link>
@@ -33,7 +33,7 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
           </div>
         )}
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="plans-grid">
           {[
             {
               id: "FREE", name: "free", price: "$0", period: "/forever",
@@ -52,7 +52,7 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
                 <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#d29922", display: "inline-block" }} />
                 <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#3fb950", display: "inline-block" }} />
                 <span style={{ color: "var(--muted)", fontSize: 12, marginLeft: 6 }}>{plan.name}.md</span>
-                {plan.id === "PRO" && <span style={{ marginLeft: "auto", background: "var(--green)", color: "#0d1117", fontSize: 11, fontWeight: 700, padding: "1px 6px", borderRadius: 3 }}>popular</span>}
+                {plan.id === "PRO" && <span style={{ marginLeft: "auto", background: "var(--green)", color: "var(--btn-text)", fontSize: 11, fontWeight: 700, padding: "1px 6px", borderRadius: 3 }}>popular</span>}
               </div>
               <div style={{ padding: 20 }}>
                 <div style={{ marginBottom: 20 }}>
@@ -68,7 +68,7 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
                 </ul>
                 {plan.id === "PRO" && userPlan !== "PRO" ? (
                   session?.user ? <CheckoutButton /> : (
-                    <Link href="/register" style={{ display: "block", background: "var(--green)", color: "#0d1117", padding: "9px 0", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13, textAlign: "center" }}>
+                    <Link href="/register" style={{ display: "block", background: "var(--green)", color: "var(--btn-text)", padding: "9px 0", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13, textAlign: "center" }}>
                       $ get_started →
                     </Link>
                   )

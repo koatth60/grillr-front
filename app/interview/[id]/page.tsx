@@ -35,7 +35,7 @@ export default async function InterviewPage({ params }: { params: Promise<{ id: 
           <span style={{ color: "var(--muted)" }}>{answered}/{total} answered</span>
           {avg !== null && <span style={{ color: avgColor, fontWeight: 700 }}>avg: {avg}/10</span>}
           {allAnswered && (
-            <Link href={`/interview/${id}/report`} style={{ background: "var(--green)", color: "#0d1117", padding: "5px 12px", borderRadius: 4, textDecoration: "none", fontWeight: 600, fontSize: 12 }}>
+            <Link href={`/interview/${id}/report`} style={{ background: "var(--green)", color: "var(--btn-text)", padding: "5px 12px", borderRadius: 4, textDecoration: "none", fontWeight: 600, fontSize: 12 }}>
               $ report →
             </Link>
           )}

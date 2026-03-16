@@ -40,7 +40,7 @@ export default function RegisterPage() {
   return (
     <main style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ width: "100%", maxWidth: 420 }}>
-        <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 16, textAlign: "center" }}>~/interview-prep-ai/auth</p>
+        <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 16, textAlign: "center" }}>~/grillr/auth</p>
 
         <TerminalWindow title="register.sh">
           <div style={{ padding: 24 }}>
@@ -75,7 +75,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                style={{ background: loading ? "var(--surface2)" : "var(--green)", color: "#0d1117", border: "none", padding: "10px 16px", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13, marginTop: 4 }}
+                style={{ background: loading ? "var(--surface2)" : "var(--green)", color: "var(--btn-text)", border: "none", padding: "10px 16px", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13, marginTop: 4 }}
               >
                 {loading ? "creating account..." : "$ register →"}
               </button>

@@ -4,8 +4,8 @@ import ThemeProvider from "@/components/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export const metadata: Metadata = {
-  title: "InterviewPrep AI",
-  description: "Ace your next tech interview with AI-powered practice sessions",
+  title: "Grillr",
+  description: "Get grilled. Get hired. AI-powered mock interviews tailored to your exact job description.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -14,6 +14,7 @@
   --amber:    #d29922;
   --red:      #f85149;
   --purple:   #bc8cff;
+  --btn-text: #0d1117;  /* text on green/colored buttons */
 }
 
 /* ── Light theme ──────────────────────────────────────────────────── */
@@ -29,6 +30,7 @@
   --amber:    #9a6700;
   --red:      #cf222e;
   --purple:   #8250df;
+  --btn-text: #ffffff;  /* white text on dark green in light mode */
 }
 
 * { box-sizing: border-box; }
@@ -63,3 +65,37 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Responsive layout helpers ────────────────────────────────────── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.plans-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.nav-hide-mobile { display: flex; }
+
+@media (max-width: 700px) {
+  .hero-grid        { grid-template-columns: 1fr; }
+  .terminal-preview { display: none; }   /* hide terminal mockup on small screens */
+  .feature-grid     { grid-template-columns: 1fr; }
+  .plans-grid       { grid-template-columns: 1fr; }
+  .stat-grid        { grid-template-columns: 1fr 1fr; }
+  .nav-hide-mobile  { display: none; }
+  h1                { font-size: 28px !important; }
+}

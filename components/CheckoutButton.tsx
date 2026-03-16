@@ -11,7 +11,7 @@ export default function CheckoutButton() {
     else setLoading(false);
   }
   return (
-    <button onClick={handle} disabled={loading} style={{ width: "100%", background: loading ? "var(--surface2)" : "var(--green)", color: "#0d1117", border: "none", padding: "9px 0", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13 }}>
+    <button onClick={handle} disabled={loading} style={{ width: "100%", background: loading ? "var(--surface2)" : "var(--green)", color: "var(--btn-text)", border: "none", padding: "9px 0", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13 }}>
       {loading ? "redirecting..." : "$ upgrade --pro →"}
     </button>
   );

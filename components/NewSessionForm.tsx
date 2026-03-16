@@ -90,7 +90,7 @@ export default function NewSessionForm({ isPro, used, limit }: { isPro: boolean;
         <button
           type="submit"
           disabled={loading}
-          style={{ background: loading ? "var(--surface2)" : "var(--green)", color: "#0d1117", border: "none", padding: "10px 18px", borderRadius: 4, cursor: loading ? "not-allowed" : "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13 }}
+          style={{ background: loading ? "var(--surface2)" : "var(--green)", color: "var(--btn-text)", border: "none", padding: "10px 18px", borderRadius: 4, cursor: loading ? "not-allowed" : "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13 }}
         >
           {loading ? "⟳ generating questions..." : "$ generate --questions →"}
         </button>

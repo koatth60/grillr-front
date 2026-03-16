@@ -11,28 +11,28 @@ export default async function HomePage() {
 
       {/* Nav */}
       <nav style={{ borderBottom: "1px solid var(--border)", padding: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 960, margin: "0 auto" }}>
-        <span style={{ color: "var(--green)", fontWeight: 700 }}>~/interview-prep-ai</span>
-        <div style={{ display: "flex", gap: 24 }}>
-          <Link href="/pricing" style={{ color: "var(--muted)", textDecoration: "none", fontSize: 13 }}>pricing</Link>
+        <span style={{ color: "var(--green)", fontWeight: 700, fontSize: 16 }}>~/grillr</span>
+        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <Link href="/pricing" className="nav-hide-mobile" style={{ color: "var(--muted)", textDecoration: "none", fontSize: 13 }}>pricing</Link>
           <Link href="/login" style={{ color: "var(--blue)", textDecoration: "none", fontSize: 13 }}>sign_in</Link>
-          <Link href="/register" style={{ background: "var(--green)", color: "#0d1117", padding: "6px 14px", borderRadius: 4, textDecoration: "none", fontSize: 13, fontWeight: 600 }}>get_started →</Link>
+          <Link href="/register" style={{ background: "var(--green)", color: "var(--btn-text)", padding: "6px 14px", borderRadius: 4, textDecoration: "none", fontSize: 13, fontWeight: 600 }}>get_started →</Link>
         </div>
       </nav>
 
       {/* Hero */}
-      <div style={{ maxWidth: 960, margin: "80px auto 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
+      <div className="hero-grid" style={{ maxWidth: 960, margin: "80px auto 0" }}>
         <div>
           <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 16 }}>// powered by claude AI</p>
           <h1 style={{ fontSize: 42, fontWeight: 700, lineHeight: 1.2, marginBottom: 20 }}>
-            Ace your next<br />
-            <span style={{ color: "var(--green)" }}>tech interview</span>
+            Get grilled.<br />
+            <span style={{ color: "var(--green)" }}>Get hired.</span>
           </h1>
           <p style={{ color: "var(--muted)", lineHeight: 1.7, marginBottom: 32, fontSize: 14 }}>
             Paste any job description → get 5 AI-tailored questions →
             answer them → receive expert feedback with a score.
           </p>
-          <div style={{ display: "flex", gap: 12 }}>
-            <Link href="/register" style={{ background: "var(--green)", color: "#0d1117", padding: "10px 20px", borderRadius: 4, textDecoration: "none", fontWeight: 700 }}>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <Link href="/register" style={{ background: "var(--green)", color: "var(--btn-text)", padding: "10px 20px", borderRadius: 4, textDecoration: "none", fontWeight: 700 }}>
               $ start --free
             </Link>
             <Link href="/pricing" style={{ border: "1px solid var(--border)", color: "var(--muted)", padding: "10px 20px", borderRadius: 4, textDecoration: "none" }}>
@@ -41,8 +41,8 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Terminal preview */}
-        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
+        {/* Terminal preview — hidden on mobile via CSS */}
+        <div className="terminal-preview" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
           <div style={{ background: "var(--surface2)", borderBottom: "1px solid var(--border)", padding: "10px 16px", display: "flex", gap: 8, alignItems: "center" }}>
             <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f85149", display: "inline-block" }} />
             <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#d29922", display: "inline-block" }} />
@@ -53,7 +53,7 @@ export default async function HomePage() {
             <p><span style={{ color: "var(--muted)" }}>$</span> <span style={{ color: "var(--green)" }}>generate</span> <span style={{ color: "var(--blue)" }}>--job</span> <span style={{ color: "#f0a868" }}>"Senior React Dev"</span></p>
             <p style={{ color: "var(--muted)" }}>✓ Analysing job description...</p>
             <p style={{ color: "var(--muted)" }}>✓ Generating 5 questions...</p>
-            <p style={{ color: "var(--green)", marginTop: 8 }}>[01] What is the virtual DOM and why does React use it?</p>
+            <p style={{ color: "var(--green)", marginTop: 8 }}>[01] What is the virtual DOM?</p>
             <p style={{ color: "var(--green)" }}>[02] Explain useCallback vs useMemo.</p>
             <p style={{ color: "var(--green)" }}>[03] How would you optimise a slow React app?</p>
             <p style={{ color: "var(--muted)", marginTop: 8 }}>$ <span className="cursor" /></p>
@@ -62,7 +62,7 @@ export default async function HomePage() {
       </div>
 
       {/* Features */}
-      <div style={{ maxWidth: 960, margin: "80px auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+      <div className="feature-grid" style={{ maxWidth: 960, margin: "80px auto" }}>
         {[
           { step: "01", color: "var(--blue)", title: "paste job description", desc: "Any role. Claude reads the JD and understands what the company actually wants." },
           { step: "02", color: "var(--green)", title: "get tailored questions", desc: "5 questions mixing technical, behavioural, and situational angles for that exact role." },
