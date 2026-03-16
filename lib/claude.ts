@@ -1,8 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+let _client: Anthropic | null = null;
+function getClient() {
+  if (!_client) _client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  return _client;
+}
 
 /**
  * Generate interview questions from a job description.
@@ -12,7 +14,7 @@ export async function generateQuestions(
   jobTitle: string,
   jobDescription: string
 ): Promise<string[]> {
-  const message = await client.messages.create({
+  const message = await getClient().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,
     messages: [
@@ -51,7 +53,7 @@ export async function generateReport(
     )
     .join("\n\n");
 
-  const message = await client.messages.create({
+  const message = await getClient().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,
     messages: [
@@ -91,7 +93,7 @@ export async function evaluateAnswer(
   answer: string,
   jobTitle: string
 ): Promise<{ feedback: string; score: number }> {
-  const message = await client.messages.create({
+  const message = await getClient().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 512,
     messages: [
