@@ -33,7 +33,7 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
           </div>
         )}
 
-        <div className="plans-grid">
+        <div className="plans-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           {[
             {
               id: "FREE", name: "free", price: "$0", period: "/forever",

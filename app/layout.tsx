@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -8,9 +8,14 @@ export const metadata: Metadata = {
   description: "Get grilled. Get hired. AI-powered mock interviews tailored to your exact job description.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       {/* Inline script: runs before React to avoid flash of wrong theme */}
       <head>
         <script

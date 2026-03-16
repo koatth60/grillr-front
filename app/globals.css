@@ -41,6 +41,7 @@ body {
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   font-size: 14px;
   transition: background 0.2s, color 0.2s;
+  overflow-x: hidden;
 }
 
 /* blinking cursor */
@@ -66,36 +67,14 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* ── Responsive layout helpers ────────────────────────────────────── */
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-}
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.plans-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-.nav-hide-mobile { display: flex; }
-
+/* ── Responsive overrides (mobile only — desktop uses inline styles) ── */
 @media (max-width: 700px) {
-  .hero-grid        { grid-template-columns: 1fr; }
-  .terminal-preview { display: none; }   /* hide terminal mockup on small screens */
-  .feature-grid     { grid-template-columns: 1fr; }
-  .plans-grid       { grid-template-columns: 1fr; }
-  .stat-grid        { grid-template-columns: 1fr 1fr; }
-  .nav-hide-mobile  { display: none; }
-  h1                { font-size: 28px !important; }
+  .hero-grid        { grid-template-columns: 1fr !important; gap: 24px !important; margin-top: 40px !important; }
+  .terminal-preview { display: none !important; }
+  .feature-grid     { grid-template-columns: 1fr !important; }
+  .plans-grid       { grid-template-columns: 1fr !important; }
+  .stat-grid        { grid-template-columns: 1fr 1fr !important; }
+  .nav-hide-mobile  { display: none !important; }
+  h1                { font-size: 26px !important; }
+  main              { padding: 0 16px !important; }
 }

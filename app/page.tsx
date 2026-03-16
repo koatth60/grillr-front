@@ -19,13 +19,13 @@ export default async function HomePage() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <div className="hero-grid" style={{ maxWidth: 960, margin: "80px auto 0" }}>
+      {/* Hero — inline styles define desktop, className handles mobile override */}
+      <div className="hero-grid" style={{ maxWidth: 960, margin: "80px auto 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
         <div>
           <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 16 }}>// powered by claude AI</p>
           <h1 style={{ fontSize: 42, fontWeight: 700, lineHeight: 1.2, marginBottom: 20 }}>
-            Get grilled.<br />
-            <span style={{ color: "var(--green)" }}>Get hired.</span>
+            <span style={{ color: "var(--green)" }}>Get grilled.</span><br />
+            Get hired.
           </h1>
           <p style={{ color: "var(--muted)", lineHeight: 1.7, marginBottom: 32, fontSize: 14 }}>
             Paste any job description → get 5 AI-tailored questions →
@@ -41,7 +41,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Terminal preview — hidden on mobile via CSS */}
+        {/* Terminal preview — hidden on mobile */}
         <div className="terminal-preview" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
           <div style={{ background: "var(--surface2)", borderBottom: "1px solid var(--border)", padding: "10px 16px", display: "flex", gap: 8, alignItems: "center" }}>
             <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f85149", display: "inline-block" }} />
@@ -62,7 +62,7 @@ export default async function HomePage() {
       </div>
 
       {/* Features */}
-      <div className="feature-grid" style={{ maxWidth: 960, margin: "80px auto" }}>
+      <div className="feature-grid" style={{ maxWidth: 960, margin: "80px auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
         {[
           { step: "01", color: "var(--blue)", title: "paste job description", desc: "Any role. Claude reads the JD and understands what the company actually wants." },
           { step: "02", color: "var(--green)", title: "get tailored questions", desc: "5 questions mixing technical, behavioural, and situational angles for that exact role." },

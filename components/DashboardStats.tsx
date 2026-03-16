@@ -15,7 +15,7 @@ export default function DashboardStats({ sessions }: { sessions: Session[] }) {
   ];
 
   return (
-    <div className="stat-grid">
+    <div className="stat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
       {stats.map((s) => (
         <div key={s.key} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8, padding: 16 }}>
           <p style={{ color: "var(--muted)", fontSize: 11, marginBottom: 6 }}>// {s.label}</p>
