@@ -1,18 +1,34 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
+/* ── Dark theme (default) ─────────────────────────────────────────── */
 :root {
-  --bg:        #0d1117;
-  --surface:   #161b22;
-  --surface2:  #21262d;
-  --border:    #30363d;
-  --text:      #e6edf3;
-  --muted:     #8b949e;
-  --green:     #3fb950;
-  --blue:      #58a6ff;
-  --amber:     #d29922;
-  --red:       #f85149;
-  --purple:    #bc8cff;
+  --bg:       #0d1117;
+  --surface:  #161b22;
+  --surface2: #21262d;
+  --border:   #30363d;
+  --text:     #e6edf3;
+  --muted:    #8b949e;
+  --green:    #3fb950;
+  --blue:     #58a6ff;
+  --amber:    #d29922;
+  --red:      #f85149;
+  --purple:   #bc8cff;
+}
+
+/* ── Light theme ──────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:       #ffffff;
+  --surface:  #f6f8fa;
+  --surface2: #eaeef2;
+  --border:   #d0d7de;
+  --text:     #1f2328;
+  --muted:    #656d76;
+  --green:    #1a7f37;
+  --blue:     #0969da;
+  --amber:    #9a6700;
+  --red:      #cf222e;
+  --purple:   #8250df;
 }
 
 * { box-sizing: border-box; }
@@ -22,6 +38,7 @@ body {
   color: var(--text);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   font-size: 14px;
+  transition: background 0.2s, color 0.2s;
 }
 
 /* blinking cursor */
@@ -36,7 +53,7 @@ body {
   margin-left: 2px;
 }
 
-/* score bar fill */
+/* score bar */
 .score-bar {
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: -1px;
