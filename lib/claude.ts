@@ -33,8 +33,9 @@ Respond ONLY with a valid JSON array of 5 strings, no explanation. Example:
     ],
   });
 
-  const text =
+  const raw =
     message.content[0].type === "text" ? message.content[0].text : "[]";
+  const text = raw.replace(/```json?\n?/g, "").replace(/```/g, "").trim();
   return JSON.parse(text);
 }
 
@@ -110,9 +111,11 @@ Give concise feedback (2-3 sentences) and a score from 1 to 10. Respond ONLY wit
     ],
   });
 
-  const text =
+  const raw =
     message.content[0].type === "text"
       ? message.content[0].text
       : '{"feedback":"Could not evaluate.","score":5}';
+  // Strip markdown code fences if Claude wraps the JSON
+  const text = raw.replace(/```json?\n?/g, "").replace(/```/g, "").trim();
   return JSON.parse(text);
 }
